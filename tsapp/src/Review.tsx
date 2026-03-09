@@ -11,7 +11,7 @@ export default function Review() {
     e.preventDefault();
     alert(`Hello ${name} !`);
     setName('');    
-  }
+  }          
 
   return(
     <>
