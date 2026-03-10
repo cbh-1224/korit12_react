@@ -1,0 +1,118 @@
+/* App.css - Client-side Styling */
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text-dark: #1e293b;
+  --text-light: #64748b;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-dark);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+/* Form Styling */
+.post-form {
+  background: var(--card);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-sizing: border-box; /* 레이아웃 깨짐 방지 */
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+button:hover { background: var(--primary-dark); }
+button:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+/* Post Card Styling */
+.post-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.post-card span {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.post-card h3 { margin: 8px 0; font-size: 1.2rem; }
+.post-card p { color: var(--text-light); line-height: 1.5; }
+
+/* Animation */
+.spin { animation: rotate 1s linear infinite; }
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
