@@ -1,14 +1,12 @@
 import { Container, AppBar, Toolbar, Typography, List, ListItem, ListItemText } from '@mui/material'
 import { useState } from 'react'
 import AddItem from './components/AddItem'
-
 import './App.css'
-
 
 export type Item = {
   product: string;
   amount: string;
-  price: number | null;
+  price?: number;
 }
 
 function App() {
@@ -41,8 +39,6 @@ function App() {
             )
           }
         </List>
-
-
       </Container>
     </>
   );

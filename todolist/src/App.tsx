@@ -1,63 +1,129 @@
-import { Container, AppBar, Toolbar, Typography, List, ListItem, ListItemText, Button } from '@mui/material'
-import { useState } from 'react'
-import AddTodo from './components/AddTodo'
 
+import { useState } from 'react';
+import { Container, Typography, TextField, Button, List, ListItem, ListItemText, IconButton, Checkbox, Box, Paper, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
 import './App.css'
 
-
 export type Todo = {
-  title: string;
-  content: string;
-
+  id: number;
+  text: string;
+  completed: boolean;
 }
 
 function App() {
   const [ todos, setTodos ] = useState<Todo[]>([]);
+  const [ inputValue, setInputValue ] = useState('');
+  const [ open, setOpen ] = useState(false);
 
-  const addTodo = (todo: Todo) => {
-    setTodos([todo, ...todos]);
+
+  const handleAddTodo = () => {
+    if (inputValue.trim() !== '') {
+      setTodos([...todos,
+        { id: Date.now(),
+          text: inputValue.trim(),
+          completed: false,
+        }
+      ]);
+    }
+
+    setInputValue('');
+    setOpen(false);
   }
 
-  const removeTodo = (index: number) => {
-    setTodos(todos.filter((_, i) => i !== index));
-  };  
+  const handleToggleTodo = (id: number) => {
+    setTodos(
+      todos.map(todo => todo.id === id ? {...todo, completed: !todo.completed } : todo)
+    );
+  }
+
+  const handleDeleteTodo = (id: number) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  const handleOpenDialog = () => setOpen(true);
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setInputValue('');
+  }
 
   return (
-    <>
-      <Container>
-        <AppBar position='static'>
-          <Toolbar>
-            <Typography variant='h6'>
-              Todo List
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <AddTodo addTodo={addTodo}/>
+    <Container maxWidth='sm' sx={{mt: 5}}>
+      <Paper elevation={10} sx={{p: 4, borderRadius: 2}}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography
+            variant='h4'
+            component={'h1'}
+            color={'primary'}
+            fontWeight={'bold'}
+            sx={{ m: 0 }}
+          >
+            📋할 일 목록
+          </Typography>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={handleOpenDialog}
+          startIcon={<AddIcon />}
+          disableElevation
+        >
+          새 할 일
+        </Button>          
+        </Box>
         <List>
           {
-            todos.map((todo, index) => 
-              <ListItem 
-                  key={index} 
-                  divider
-                  secondaryAction = {
-                  <Button onClick = {() => removeTodo(index)}>
-                    Delete
-                  </Button>
-                }         
-                >       
+            todos.map(todo => (
+              <ListItem
+                key={todo.id}
+                divider
+                secondaryAction={
+                  <IconButton edge='end' aria-label='delete' onClick={() => handleDeleteTodo(todo.id)}>
+                    <DeleteIcon color='error' />
+                  </IconButton>
+                }
+                disablePadding
+              >
+                <Checkbox
+                  edge='start'
+                  checked={todo.completed}
+                  onChange={() => handleToggleTodo(todo.id)}
+                />
                 <ListItemText 
-                  primary={todo.title}
-                  secondary={todo.content}              
+                  primary={todo.text}
+                  sx={{textDecoration: todo.completed ? 'line-through' : 'none'}}
                 />
               </ListItem>
-            )
+            ))
           }
         </List>
+      </Paper>
 
-
-      </Container>
-    </>
-  );
+      <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth='xs'>
+        <DialogTitle>새 할 일 추가</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin='dense'
+            label='할 일 입력'
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') 
+                handleAddTodo();
+            }}
+            
+           />
+        </DialogContent>           
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>취소</Button>
+          <Button onClick={handleAddTodo} variant='contained'>추가</Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
+    );
 }
 
 export default App
